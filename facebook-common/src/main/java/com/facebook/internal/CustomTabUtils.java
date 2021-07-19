@@ -6,15 +6,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.content.pm.ServiceInfo;
-import android.support.customtabs.CustomTabsService;
-
+import androidx.browser.customtabs.CustomTabsService;
 import com.facebook.FacebookSdk;
-
+import com.facebook.internal.instrument.crashshield.AutoHandleExceptions;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@AutoHandleExceptions
 public class CustomTabUtils {
   private static final String[] CHROME_PACKAGES = {
     "com.android.chrome", "com.chrome.beta", "com.chrome.dev",
@@ -23,6 +23,24 @@ public class CustomTabUtils {
   public static String getDefaultRedirectURI() {
     return Validate.CUSTOM_TAB_REDIRECT_URI_PREFIX
         + FacebookSdk.getApplicationContext().getPackageName();
+  }
+
+  public static String getValidRedirectURI(String developerDefinedRedirectURI) {
+    boolean hasDeveloperDefinedRedirect =
+        Validate.hasCustomTabRedirectActivity(
+            FacebookSdk.getApplicationContext(), developerDefinedRedirectURI);
+    if (hasDeveloperDefinedRedirect) {
+      return developerDefinedRedirectURI;
+    } else {
+      boolean hasDefaultRedirect =
+          Validate.hasCustomTabRedirectActivity(
+              FacebookSdk.getApplicationContext(), CustomTabUtils.getDefaultRedirectURI());
+
+      if (hasDefaultRedirect) {
+        return CustomTabUtils.getDefaultRedirectURI();
+      }
+    }
+    return "";
   }
 
   public static String getChromePackage() {

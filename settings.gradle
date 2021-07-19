@@ -19,9 +19,9 @@
  */
 
 // Facebook SDK
+include ':facebook-testutil'
 include ':facebook-core'
 include ':facebook-common', ':facebook-login', ':facebook-share', ':facebook-places', ':facebook-applinks', ':facebook-messenger'
-// @fb-only: include ':facebook-marketing'
 // @fb-only: include ':facebook-livestreaming'
 // @fb-only: include ':facebook-beta'
 include ':facebook-gamingservices'
@@ -33,7 +33,6 @@ include ':samples:Iconicus'
 // @fb-only: include ':samples:LoginSample'
 include ':samples:RPSSample'
 include ':samples:MessengerSendSample'
-include ':samples:PlacesGraphSample'
 include ':samples:Scrumptious'
 include ':samples:SwitchUserSample'
 include ':samples:ShareIt'
